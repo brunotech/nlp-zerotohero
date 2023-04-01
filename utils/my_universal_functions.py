@@ -5,17 +5,11 @@
 
 
 def checkIfNotNumeric(*args):    
-    for x in args:
-        if not(isinstance(x,(int,float))):
-            return False
-    return True
+    return all((isinstance(x,(int,float))) for x in args)
 
 
 def addAllNumerics(*args):
-    s = 0
-    for x in args:
-        s+=x
-    return s
+    return sum(args)
 
 myName = "Python Course"
 
