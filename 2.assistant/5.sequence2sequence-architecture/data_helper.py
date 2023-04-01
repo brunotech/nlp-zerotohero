@@ -53,12 +53,12 @@ def clean_data(sample):
     Returns:
     """
     (content, title) = sample
-    sample = dict()
+    sample = {}
     # 清洗数据
     sample["title"] = clean_weibo_title(title.strip())
     sample["content"] = clean_weibo_content(content.strip())
     sample["content"] = ' '.join(jieba.cut(sample['content'], cut_all=False))
-    sample["title"] = ' '.join(jieba.cut(sample['title'], cut_all=False))                         
+    sample["title"] = ' '.join(jieba.cut(sample['title'], cut_all=False))
     return sample
 
 
@@ -90,19 +90,16 @@ def build_news_data(content_path, title_path, train_save_path, test_save_path):
     for d in data:
         if d["content"] in data_set or len(d["content"]) < 100 or len(d["title"]) < 2:
             continue
-        else:
-            data_set.add(d["content"])
+        data_set.add(d["content"])
 
-            data_new.append(d['content'] + '\t' + d['title'])
+        data_new.append(d['content'] + '\t' + d['title'])
     # 分割数据，构建训练集和测试集
     random.shuffle(data_new)
     train_data = data_new[:-3000]
     test_data = data_new[-3000:]
     print('writing train data to file ...')
-    fin = open(train_save_path, "w", encoding="utf-8")
-    fin.write('\n'.join(train_data))
-    fin.close()
+    with open(train_save_path, "w", encoding="utf-8") as fin:
+        fin.write('\n'.join(train_data))
     print('writing test data to file ...')
-    fin = open(test_save_path, "w", encoding="utf-8")
-    fin.write('\n'.join(test_data))
-    fin.close()
+    with open(test_save_path, "w", encoding="utf-8") as fin:
+        fin.write('\n'.join(test_data))
